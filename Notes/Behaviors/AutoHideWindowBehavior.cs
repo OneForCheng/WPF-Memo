@@ -136,7 +136,6 @@ namespace Notes.Behaviors
 
         #endregion
 
-
         #region Events and Private methods
 
         private void AutoHideTimer_Tick(object sender, EventArgs e)
@@ -152,18 +151,24 @@ namespace Notes.Behaviors
                             if (AssociatedObject.Top <= _autoHideFactor)
                             {
                                 _hideStatus = HideState.PreviewTopHidden;
+                                AssociatedObject.Topmost = true;
                             }
-                            else if (AssociatedObject.Left + AssociatedObject.ActualWidth >= SystemParameters.VirtualScreenWidth - _autoHideFactor)
+                            else if (AssociatedObject.Left + AssociatedObject.ActualWidth >=
+                                     SystemParameters.VirtualScreenWidth - _autoHideFactor)
                             {
                                 _hideStatus = HideState.PreviewRightHidden;
+                                AssociatedObject.Topmost = true;
                             }
-                            else if (AssociatedObject.Top + AssociatedObject.ActualHeight >= SystemParameters.VirtualScreenHeight - _autoHideFactor)
+                            else if (AssociatedObject.Top + AssociatedObject.ActualHeight >=
+                                     SystemParameters.VirtualScreenHeight - _autoHideFactor)
                             {
                                 _hideStatus = HideState.PreviewBottomHidden;
+                                AssociatedObject.Topmost = true;
                             }
                             else if (AssociatedObject.Left <= _autoHideFactor)
                             {
                                 _hideStatus = HideState.PreviewLeftHidden;
+                                AssociatedObject.Topmost = true;
                             }
                             _lockTimer = false;
                             break;
@@ -171,16 +176,17 @@ namespace Notes.Behaviors
                             if (AssociatedObject.Top <= _autoHideFactor)
                             {
                                 if (_curPosition.X < AssociatedObject.Left ||
-                                _curPosition.X > AssociatedObject.Left + AssociatedObject.ActualWidth ||
-                                _curPosition.Y > AssociatedObject.Top + AssociatedObject.ActualHeight)
+                                    _curPosition.X > AssociatedObject.Left + AssociatedObject.ActualWidth ||
+                                    _curPosition.Y > AssociatedObject.Top + AssociatedObject.ActualHeight)
                                 {
-                                    AnimationTranslate(MoveDirection.Top, AssociatedObject.ActualHeight + _autoHideFactor, () =>
-                                    {
-                                        AssociatedObject.Top = -(AssociatedObject.ActualHeight + _autoHideFactor);
-                                        _hideStatus = HideState.TopHidden;
-                                        AssociatedObject.Hide();
-                                        _lockTimer = false;
-                                    });
+                                    AnimationTranslate(MoveDirection.Top,
+                                        AssociatedObject.ActualHeight + _autoHideFactor, () =>
+                                        {
+                                            AssociatedObject.Top = -(AssociatedObject.ActualHeight + _autoHideFactor);
+                                            _hideStatus = HideState.TopHidden;
+                                            AssociatedObject.Hide();
+                                            _lockTimer = false;
+                                        });
                                 }
                                 else
                                 {
@@ -189,6 +195,7 @@ namespace Notes.Behaviors
                             }
                             else
                             {
+                                AssociatedObject.Topmost = false;
                                 _hideStatus = HideState.None;
                                 _lockTimer = false;
                             }
@@ -200,12 +207,13 @@ namespace Notes.Behaviors
                             {
                                 AssociatedObject.Show();
                                 AssociatedObject.Activate();
-                                AnimationTranslate(MoveDirection.Bottom, AssociatedObject.ActualHeight + _autoHideFactor, () =>
-                                {
-                                    AssociatedObject.Top = 0;
-                                    _hideStatus = HideState.PreviewTopHidden;
-                                    _lockTimer = false;
-                                });
+                                AnimationTranslate(MoveDirection.Bottom, AssociatedObject.ActualHeight + _autoHideFactor,
+                                    () =>
+                                    {
+                                        AssociatedObject.Top = 0;
+                                        _hideStatus = HideState.PreviewTopHidden;
+                                        _lockTimer = false;
+                                    });
 
                             }
                             else
@@ -214,19 +222,22 @@ namespace Notes.Behaviors
                             }
                             break;
                         case HideState.PreviewRightHidden:
-                            if (AssociatedObject.Left + AssociatedObject.ActualWidth >= SystemParameters.VirtualScreenWidth - _autoHideFactor)
+                            if (AssociatedObject.Left + AssociatedObject.ActualWidth >=
+                                SystemParameters.VirtualScreenWidth - _autoHideFactor)
                             {
                                 if (_curPosition.X < AssociatedObject.Left ||
-                                _curPosition.Y < AssociatedObject.Top ||
-                                _curPosition.Y > AssociatedObject.Top + AssociatedObject.ActualHeight)
+                                    _curPosition.Y < AssociatedObject.Top ||
+                                    _curPosition.Y > AssociatedObject.Top + AssociatedObject.ActualHeight)
                                 {
-                                    AnimationTranslate(MoveDirection.Right, AssociatedObject.ActualHeight + _autoHideFactor, () =>
-                                    {
-                                        AssociatedObject.Left = (SystemParameters.VirtualScreenWidth + _autoHideFactor);
-                                        _hideStatus = HideState.RightHidden;
-                                        AssociatedObject.Hide();
-                                        _lockTimer = false;
-                                    });
+                                    AnimationTranslate(MoveDirection.Right,
+                                        AssociatedObject.ActualHeight + _autoHideFactor, () =>
+                                        {
+                                            AssociatedObject.Left = (SystemParameters.VirtualScreenWidth +
+                                                                     _autoHideFactor);
+                                            _hideStatus = HideState.RightHidden;
+                                            AssociatedObject.Hide();
+                                            _lockTimer = false;
+                                        });
                                 }
                                 else
                                 {
@@ -235,6 +246,7 @@ namespace Notes.Behaviors
                             }
                             else
                             {
+                                AssociatedObject.Topmost = false;
                                 _hideStatus = HideState.None;
                                 _lockTimer = false;
                             }
@@ -246,12 +258,14 @@ namespace Notes.Behaviors
                             {
                                 AssociatedObject.Show();
                                 AssociatedObject.Activate();
-                                AnimationTranslate(MoveDirection.Left, AssociatedObject.ActualWidth + _autoHideFactor, () =>
-                                {
-                                    AssociatedObject.Left = SystemParameters.VirtualScreenWidth - AssociatedObject.ActualWidth;
-                                    _hideStatus = HideState.PreviewRightHidden;
-                                    _lockTimer = false;
-                                });
+                                AnimationTranslate(MoveDirection.Left, AssociatedObject.ActualWidth + _autoHideFactor,
+                                    () =>
+                                    {
+                                        AssociatedObject.Left = SystemParameters.VirtualScreenWidth -
+                                                                AssociatedObject.ActualWidth;
+                                        _hideStatus = HideState.PreviewRightHidden;
+                                        _lockTimer = false;
+                                    });
 
                             }
                             else
@@ -260,20 +274,23 @@ namespace Notes.Behaviors
                             }
                             break;
                         case HideState.PreviewBottomHidden:
-                            if (AssociatedObject.Top + AssociatedObject.ActualHeight >= SystemParameters.VirtualScreenHeight - _autoHideFactor)
+                            if (AssociatedObject.Top + AssociatedObject.ActualHeight >=
+                                SystemParameters.VirtualScreenHeight - _autoHideFactor)
                             {
                                 if (_curPosition.Y < AssociatedObject.Top ||
-                               _curPosition.X < AssociatedObject.Left ||
-                               _curPosition.X > AssociatedObject.Left + AssociatedObject.ActualWidth)
+                                    _curPosition.X < AssociatedObject.Left ||
+                                    _curPosition.X > AssociatedObject.Left + AssociatedObject.ActualWidth)
                                 {
-                                    AnimationTranslate(MoveDirection.Bottom, AssociatedObject.ActualHeight + _autoHideFactor, () =>
-                                    {
-                                        AssociatedObject.Top = (SystemParameters.VirtualScreenHeight + _autoHideFactor);
-                                        _hideStatus = HideState.BottomHidden;
-                                        AssociatedObject.Hide();
-                                        _lockTimer = false;
+                                    AnimationTranslate(MoveDirection.Bottom,
+                                        AssociatedObject.ActualHeight + _autoHideFactor, () =>
+                                        {
+                                            AssociatedObject.Top = (SystemParameters.VirtualScreenHeight +
+                                                                    _autoHideFactor);
+                                            _hideStatus = HideState.BottomHidden;
+                                            AssociatedObject.Hide();
+                                            _lockTimer = false;
 
-                                    });
+                                        });
                                 }
                                 else
                                 {
@@ -282,23 +299,26 @@ namespace Notes.Behaviors
                             }
                             else
                             {
+                                AssociatedObject.Topmost = false;
                                 _hideStatus = HideState.None;
                                 _lockTimer = false;
                             }
                             break;
                         case HideState.BottomHidden:
                             if (_curPosition.Y >= SystemParameters.VirtualScreenHeight - _autoHideFactor &&
-                               _curPosition.X >= AssociatedObject.Left &&
-                               _curPosition.X <= AssociatedObject.Left + AssociatedObject.ActualWidth)
+                                _curPosition.X >= AssociatedObject.Left &&
+                                _curPosition.X <= AssociatedObject.Left + AssociatedObject.ActualWidth)
                             {
                                 AssociatedObject.Show();
                                 AssociatedObject.Activate();
-                                AnimationTranslate(MoveDirection.Top, AssociatedObject.ActualHeight + _autoHideFactor, () =>
-                                {
-                                    AssociatedObject.Top = SystemParameters.VirtualScreenHeight - AssociatedObject.ActualHeight;
-                                    _hideStatus = HideState.PreviewBottomHidden;
-                                    _lockTimer = false;
-                                });
+                                AnimationTranslate(MoveDirection.Top, AssociatedObject.ActualHeight + _autoHideFactor,
+                                    () =>
+                                    {
+                                        AssociatedObject.Top = SystemParameters.VirtualScreenHeight -
+                                                               AssociatedObject.ActualHeight;
+                                        _hideStatus = HideState.PreviewBottomHidden;
+                                        _lockTimer = false;
+                                    });
                             }
                             else
                             {
@@ -309,16 +329,17 @@ namespace Notes.Behaviors
                             if (AssociatedObject.Left <= _autoHideFactor)
                             {
                                 if (_curPosition.X > AssociatedObject.Left + AssociatedObject.ActualWidth ||
-                                 _curPosition.Y < AssociatedObject.Top ||
-                                 _curPosition.Y > AssociatedObject.Top + AssociatedObject.ActualHeight)
+                                    _curPosition.Y < AssociatedObject.Top ||
+                                    _curPosition.Y > AssociatedObject.Top + AssociatedObject.ActualHeight)
                                 {
-                                    AnimationTranslate(MoveDirection.Left, AssociatedObject.ActualWidth + _autoHideFactor, () =>
-                                    {
-                                        AssociatedObject.Left = -(AssociatedObject.ActualWidth + _autoHideFactor);
-                                        _hideStatus = HideState.LeftHidden;
-                                        AssociatedObject.Hide();
-                                        _lockTimer = false;
-                                    });
+                                    AnimationTranslate(MoveDirection.Left,
+                                        AssociatedObject.ActualWidth + _autoHideFactor, () =>
+                                        {
+                                            AssociatedObject.Left = -(AssociatedObject.ActualWidth + _autoHideFactor);
+                                            _hideStatus = HideState.LeftHidden;
+                                            AssociatedObject.Hide();
+                                            _lockTimer = false;
+                                        });
                                 }
                                 else
                                 {
@@ -327,23 +348,25 @@ namespace Notes.Behaviors
                             }
                             else
                             {
+                                AssociatedObject.Topmost = false;
                                 _hideStatus = HideState.None;
                                 _lockTimer = false;
                             }
                             break;
                         case HideState.LeftHidden:
                             if (_curPosition.X <= _autoHideFactor &&
-                                 _curPosition.Y >= AssociatedObject.Top &&
-                                 _curPosition.Y <= AssociatedObject.Top + AssociatedObject.ActualHeight)
+                                _curPosition.Y >= AssociatedObject.Top &&
+                                _curPosition.Y <= AssociatedObject.Top + AssociatedObject.ActualHeight)
                             {
                                 AssociatedObject.Show();
                                 AssociatedObject.Activate();
-                                AnimationTranslate(MoveDirection.Right, AssociatedObject.ActualWidth + _autoHideFactor, () =>
-                                {
-                                    AssociatedObject.Left = 0;
-                                    _hideStatus = HideState.PreviewLeftHidden;
-                                    _lockTimer = false;
-                                });
+                                AnimationTranslate(MoveDirection.Right, AssociatedObject.ActualWidth + _autoHideFactor,
+                                    () =>
+                                    {
+                                        AssociatedObject.Left = 0;
+                                        _hideStatus = HideState.PreviewLeftHidden;
+                                        _lockTimer = false;
+                                    });
                             }
                             else
                             {
@@ -351,6 +374,10 @@ namespace Notes.Behaviors
                             }
                             break;
                     }
+                }
+                else
+                {
+                    _lockTimer = false;
                 }
             }
         }
@@ -392,5 +419,4 @@ namespace Notes.Behaviors
 
         #endregion
     }
-
 }

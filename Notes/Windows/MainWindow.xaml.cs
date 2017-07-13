@@ -423,6 +423,5 @@ namespace Notes.Windows
 
         #endregion
 
-       
     }
 }
